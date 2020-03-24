@@ -14,7 +14,9 @@ See the code snippets below for what functionality you can use.
 - Missile launcher adapter changes address after save reload.
 
 ## Code Snippets
-### Missile Launcher
+<details>
+  <summary>Missile Launcher</summary> 
+ 
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -50,7 +52,11 @@ else
 end
 ```
 
-### Radar Station
+</details>
+
+<details>
+  <summary>Radar Station</summary> 
+
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -79,7 +85,11 @@ print(serialization.serialize(proxy.getIncomingMissiles()))
 -- }
 ```
 
-### EMP Station
+</details>
+
+<details>
+  <summary>EMP Tower</summary> 
+ 
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -100,7 +110,11 @@ print("Activating the emp:")
 print(proxy.launch())
 ```
 
-## Cruise Launcher
+</details>
+
+<details>
+  <summary>Cruise Launcher</summary> 
+ 
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -127,12 +141,15 @@ else
 end
 ```
 
+</details>
+
 ## Simple defense system
 This is a simple system that will send an event when a missile has been detected and then will launch an anti-ballistic missile.
 With this setup the anti ballistic missile will hit about 25% of the targets depending on location where it is fired from.
 
-
-missile_monitor.lua
+<details>
+  <summary>radar.lua</summary> 
+ 
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -184,8 +201,11 @@ local t = thread.create(function(a, b)
 end)
 t:detach()
 ```
+</details>
 
-anti_missile_launcher.lua
+<details>
+  <summary>anti_missile_launcher.lua</summary> 
+
 ```lua
 local serialization = require("serialization")
 local component = require("component")
@@ -206,4 +226,4 @@ while true do
   os.sleep()
 end
 ```
-
+</details>
