@@ -1,0 +1,16 @@
+[
+{
+  "modid": "eternalsoap.icbm.opencomputers",
+  "name": "ICBM OpenComputers Mod",
+  "description": "Mod for interacting with ICBM",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["EternalSoap"],
+  "credits": "The Forge and FML guys, for making this example, Mightypirates for OpenComputers, BuiltbrokenModding for ICBM",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["icbmclassic","OpenComputers"]
+}
+]
