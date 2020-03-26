@@ -15,6 +15,10 @@ public class CruiseLauncherEnvironment extends FrequencyEnvironment<TileCruiseLa
         super(tileEntity, "component_cruise_launcher");
     }
 
+    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s. == \"component_cruise_launcher\"")
+    public Object[] isICBM(final Context context, final Arguments arguments) {
+        return new Object[]{arguments.checkString(0).equals("component_cruise_launcher")};
+    }
 
     @Callback(doc = "function():number -- Get the X & Z coordinate of the target position")
     public Object[] getTargetPos(final Context context, final Arguments args) {

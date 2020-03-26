@@ -19,9 +19,7 @@ public abstract class FrequencyEnvironment<T extends TileFrequency> extends Mana
 
     @Callback(doc = "function():number -- Set the Frequency the device operates on")
     public Object[] setFrequency(final Context context, final Arguments args) {
-        if (args.isInteger(0)) {
-            tileEntity.setFrequency(args.checkInteger(0));
-        }
+        tileEntity.setFrequency(args.checkInteger(0));
         return null;
     }
 }

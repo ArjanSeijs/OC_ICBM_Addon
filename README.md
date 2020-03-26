@@ -9,9 +9,39 @@ You can access the component by placing an [adapter](https://ocdoc.cil.li/block:
 - EMP Station
 
 See the code snippets below for what functionality you can use.
+
+### Accesing the components
+By address
+
+```lua
+local component = require("component")
+local proxy = component.proxy("xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
+```
+
+By searching through the components on component_name
+```lua
+local component = require("component")
+local proxy = nil
+
+-- Possible values: 
+-- "component_missile_launcher", 
+-- "component_emp_tower",
+-- "component_radar_station", 
+-- "component_cruise_launcher"
+local component_name = "component_missile_launcher" 
+
+for k,v in component.list() do
+  local p = component.proxy(k)
+  if not (p.isICBM == nil) and p.isICBM(component_name) then
+    proxy = p
+  end
+end
+```
  
 ## Know issues
 - Missile launcher adapter changes address after save reload.
+
+
 
 ## Code Snippets
 <details>
@@ -107,7 +137,9 @@ print("The current radius is:")
 print(proxy.getRadius())
  
 print("Activating the emp:")
-print(proxy.launch())
+if proxy.isReady() then
+    print(proxy.launch())
+end
 ```
 
 </details>
@@ -173,7 +205,7 @@ local function contains(uuid, list)
 end
  
 local function loop()
-  local missiles = radar.getIncomingMissiles()
+  local missiles = radar.getMissiles()
   local new_missiles = {}
    
   for index, value in ipairs(missiles) do
