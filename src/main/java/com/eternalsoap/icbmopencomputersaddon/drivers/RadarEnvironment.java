@@ -8,15 +8,18 @@ import li.cil.oc.api.machine.Context;
 import net.minecraft.util.math.BlockPos;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-//TODO add missile detection event
 public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
+
 
     public RadarEnvironment(TileRadarStation radarStation) {
         super(radarStation, "component_radar_station");
+    }
+
+    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s. == \"component_radar_station\"")
+    public Object[] isICBM(final Context context, final Arguments arguments) {
+        return new Object[]{arguments.checkString(0).equals("component_radar_station")};
     }
 
     @Callback(doc = "function():number -- Get the Alarm Range of the Radar")
@@ -24,13 +27,13 @@ public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
         return new Object[]{tileEntity.alarmRange};
     }
 
-    @Callback(doc = "function(number):boolean -- Set the Alarm Range of the Radar, return true on success false otherwise")
+    @Callback(doc = "function(number) -- Set the Alarm Range of the radar. Number must be in range of [1," + TileRadarStation.MAX_DETECTION_RANGE + "]")
     public Object[] setAlarmRange(final Context context, final Arguments args) {
-        if (!args.isInteger(0)) return new Object[]{false};
         int newRange = args.checkInteger(0);
-        if (newRange > TileRadarStation.MAX_DETECTION_RANGE) return new Object[]{false};
+        if (newRange > TileRadarStation.MAX_DETECTION_RANGE)
+            throw new IllegalArgumentException("Number must be in range of [1," + TileRadarStation.MAX_DETECTION_RANGE + "]");
         tileEntity.alarmRange = newRange;
-        return new Object[]{true};
+        return null;
     }
 
     @Callback(doc = "function():number -- Get the Safety Range of the Radar")
@@ -38,22 +41,17 @@ public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
         return new Object[]{tileEntity.safetyRange};
     }
 
-    @Callback(doc = "function(number):boolean -- Set the Safety Range of the Radar, return true on success false otherwise")
+    @Callback(doc = "function(number):boolean -- Set the Safety Range of the Radar. Number must be in range of [1," + TileRadarStation.MAX_DETECTION_RANGE + "]")
     public Object[] setSafetyRange(final Context context, final Arguments args) {
-        if (!args.isInteger(0)) return new Object[]{false};
         int newRange = args.checkInteger(0);
-        if (newRange > TileRadarStation.MAX_DETECTION_RANGE) return new Object[]{false};
+        if (newRange > TileRadarStation.MAX_DETECTION_RANGE)
+            throw new IllegalArgumentException("Number must be in range of [1," + TileRadarStation.MAX_DETECTION_RANGE + "]");
         tileEntity.safetyRange = newRange;
         return new Object[]{true};
     }
 
     @Callback(doc = "function():table -- A list of all incoming missiles")
     public Object[] getMissiles(final Context context, final Arguments args) {
-        return getIncomingMissiles(context, args);
-    }
-
-    @Callback(doc = "function():table -- A list of all incoming missiles")
-    public Object[] getIncomingMissiles(final Context context, final Arguments args) {
         try {
             List<EntityMissile> missiles = getMissiles();
             return new Object[]{mapToTable(missiles)};
@@ -75,11 +73,16 @@ public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
         int i = 0;
         for (EntityMissile missile : missiles) {
             BlockPos position = missile.getPosition();
-            Map<String, Object> value = new HashMap<>();
+            Map<String, Object> value = new LinkedHashMap<>();
             value.put("x", position.getX());
             value.put("y", position.getY());
             value.put("z", position.getZ());
-            value.put("UUID", missile.getUniqueID().toString());
+
+            //We create a new UUID from the UUID so that we abstract away the entity UUID
+            String originalUUID = missile.getUniqueID().toString();
+            String newUUID = UUID.nameUUIDFromBytes(originalUUID.getBytes()).toString();
+            value.put("UUID", newUUID);
+
             result[i] = value;
             i++;
         }
