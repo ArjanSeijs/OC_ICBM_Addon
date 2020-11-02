@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.1"
+version = "1.2"
 group = "eternalsoap.icbm.opencomputers" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "OpenComputersICBMAddon"
 
@@ -40,7 +40,7 @@ dependencies {
     compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.5+:api"
     compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.5+:javadoc"
     compile files("./lib/industrialcraft-2-2.8.196-ex112-api.jar")
-    compile files("./lib/ICBM-classic-1.12.2-3.3.0b63.jar")
+    compile files("./lib/ICBM-classic-1.12.2-4.0.1b75.jar")
 }
 
 dependencies {

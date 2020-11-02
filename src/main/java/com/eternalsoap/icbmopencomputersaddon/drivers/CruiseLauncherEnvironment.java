@@ -1,6 +1,6 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
-import icbm.classic.content.machines.launcher.cruise.TileCruiseLauncher;
+import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
 import icbm.classic.lib.transform.vector.Pos;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;

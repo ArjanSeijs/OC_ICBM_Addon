@@ -1,6 +1,6 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
-import icbm.classic.content.machines.radarstation.TileRadarStation;
+import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverSidedTileEntity;
 import net.minecraft.util.EnumFacing;
