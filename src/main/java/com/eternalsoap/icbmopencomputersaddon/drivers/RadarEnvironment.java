@@ -1,7 +1,7 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
-import icbm.classic.content.machines.radarstation.TileRadarStation;
-import icbm.classic.content.missile.EntityMissile;
+import icbm.classic.api.caps.IMissile;
+import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -51,9 +51,14 @@ public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
     }
 
     @Callback(doc = "function():table -- A list of all incoming missiles")
+    public Object[] getIncomingMissiles(final Context context, final Arguments args) {
+        return getMissiles(context, args);
+    }
+
+    @Callback(doc = "function():table -- A list of all incoming missiles")
     public Object[] getMissiles(final Context context, final Arguments args) {
         try {
-            List<EntityMissile> missiles = getMissiles();
+            List<IMissile> missiles = getMissiles();
             return new Object[]{mapToTable(missiles)};
         } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
             e.printStackTrace();
@@ -61,25 +66,25 @@ public class RadarEnvironment extends FrequencyEnvironment<TileRadarStation> {
         return null;
     }
 
-    private List<EntityMissile> getMissiles() throws NoSuchFieldException, IllegalAccessException {
+    private List<IMissile> getMissiles() throws NoSuchFieldException, IllegalAccessException {
         Field field = TileRadarStation.class.getDeclaredField("incomingMissiles");
         field.setAccessible(true);
         //noinspection unchecked
-        return (List<EntityMissile>) field.get(tileEntity);
+        return (List<IMissile>) field.get(tileEntity);
     }
 
-    private Object[] mapToTable(List<EntityMissile> missiles) {
+    private Object[] mapToTable(List<IMissile> missiles) {
         Object[] result = new Object[missiles.size()];
         int i = 0;
-        for (EntityMissile missile : missiles) {
-            BlockPos position = missile.getPosition();
+        for (IMissile missile : missiles) {
+            BlockPos position = missile.getPos();
             Map<String, Object> value = new LinkedHashMap<>();
             value.put("x", position.getX());
             value.put("y", position.getY());
             value.put("z", position.getZ());
 
             //We create a new UUID from the UUID so that we abstract away the entity UUID
-            String originalUUID = missile.getUniqueID().toString();
+            String originalUUID = missile.getMissileEntity().getUniqueID().toString();
             String newUUID = UUID.nameUUIDFromBytes(originalUUID.getBytes()).toString();
             value.put("UUID", newUUID);
 

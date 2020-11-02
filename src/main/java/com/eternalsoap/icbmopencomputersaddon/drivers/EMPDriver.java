@@ -1,6 +1,6 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
-import icbm.classic.content.machines.emptower.TileEMPTower;
+import icbm.classic.content.blocks.emptower.TileEMPTower;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverSidedTileEntity;
 import net.minecraft.util.EnumFacing;

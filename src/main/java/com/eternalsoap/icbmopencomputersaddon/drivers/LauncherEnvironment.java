@@ -1,9 +1,9 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
 import com.eternalsoap.icbmopencomputersaddon.util.ManagedTileEntityEnvironment;
-import icbm.classic.content.machines.launcher.base.TileLauncherBase;
+import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
 import icbm.classic.lib.transform.vector.Pos;
-import icbm.classic.prefab.tile.EnumTier;
+import icbm.classic.api.EnumTier;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;

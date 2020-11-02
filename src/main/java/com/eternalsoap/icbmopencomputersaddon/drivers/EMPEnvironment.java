@@ -1,7 +1,8 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
 import com.eternalsoap.icbmopencomputersaddon.util.ManagedTileEntityEnvironment;
-import icbm.classic.content.machines.emptower.TileEMPTower;
+import icbm.classic.content.blocks.emptower.EMPMode;
+import icbm.classic.content.blocks.emptower.TileEMPTower;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -51,13 +52,13 @@ public class EMPEnvironment extends ManagedTileEntityEnvironment<TileEMPTower> {
     public Object[] setMode(final Context context, final Arguments args) {
         switch (args.checkInteger(0)) {
             case 0:
-                tileEntity.empMode = (byte) 0;
+                tileEntity.empMode = EMPMode.ALL;
                 break;
             case 1:
-                tileEntity.empMode = (byte) 1;
+                tileEntity.empMode = EMPMode.MISSILES_ONLY;
                 break;
             case 2:
-                tileEntity.empMode = (byte) 2;
+                tileEntity.empMode = EMPMode.ELECTRICITY_ONLY;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid mode, Mode should be 0, 1 or 2");
