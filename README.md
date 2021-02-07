@@ -1,6 +1,9 @@
 ## ICBM OpenComputers
 [ICBM-Classic](https://www.curseforge.com/minecraft/mc-mods/icbm-classic) API integration for [OpenComputers](https://www.curseforge.com/minecraft/mc-mods/opencomputers)
 
+## Wiki
+See the [wiki](https://github.com/ArjanSeijs/OC_ICBM_Addon/wiki) for a more detailed explanation.
+
 ## Components
 You can access the component by placing an [adapter](https://ocdoc.cil.li/block:adapter)  next to one of the following blocks:
 - Missile Launcher

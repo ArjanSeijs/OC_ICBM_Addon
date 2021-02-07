@@ -3,19 +3,23 @@ package com.eternalsoap.icbmopencomputersaddon.drivers;
 import com.eternalsoap.icbmopencomputersaddon.util.ManagedTileEntityEnvironment;
 import icbm.classic.content.blocks.emptower.EMPMode;
 import icbm.classic.content.blocks.emptower.TileEMPTower;
+import li.cil.oc.api.driver.NamedBlock;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 
-public class EMPEnvironment extends ManagedTileEntityEnvironment<TileEMPTower> {
+@SuppressWarnings("unused")
+public class EMPEnvironment extends ManagedTileEntityEnvironment<TileEMPTower> implements NamedBlock {
+
+    public static final String COMPONENT_NAME = "icbm_emp_tower";
 
     public EMPEnvironment(TileEMPTower tileEntity) {
-        super(tileEntity, "component_emp_tower");
+        super(tileEntity, COMPONENT_NAME);
     }
 
     @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s == \"component_emp_tower\"")
     public Object[] isICBM(final Context context, final Arguments arguments) {
-        return new Object[]{arguments.checkString(0).equals("component_emp_tower")};
+        return new Object[]{arguments.checkString(0).equals(COMPONENT_NAME)};
     }
 
     @Callback(doc = "function():number -- Get the Radius of the EMP Tower")
@@ -64,5 +68,15 @@ public class EMPEnvironment extends ManagedTileEntityEnvironment<TileEMPTower> {
                 throw new IllegalArgumentException("Invalid mode, Mode should be 0, 1 or 2");
         }
         return null;
+    }
+
+    @Override
+    public String preferredName() {
+        return COMPONENT_NAME;
+    }
+
+    @Override
+    public int priority() {
+        return 1;
     }
 }

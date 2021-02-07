@@ -2,6 +2,7 @@ package com.eternalsoap.icbmopencomputersaddon.drivers;
 
 import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
 import icbm.classic.lib.transform.vector.Pos;
+import li.cil.oc.api.driver.NamedBlock;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -9,15 +10,18 @@ import li.cil.oc.api.machine.Context;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CruiseLauncherEnvironment extends FrequencyEnvironment<TileCruiseLauncher> {
+@SuppressWarnings("unused")
+public class CruiseLauncherEnvironment extends FrequencyEnvironment<TileCruiseLauncher> implements NamedBlock {
+
+    public static final String COMPONENT_NAME = "icbm_cruise_launcher";
 
     public CruiseLauncherEnvironment(TileCruiseLauncher tileEntity) {
-        super(tileEntity, "component_cruise_launcher");
+        super(tileEntity, COMPONENT_NAME);
     }
 
-    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s. == \"component_cruise_launcher\"")
+    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s == \""+ COMPONENT_NAME + "\"")
     public Object[] isICBM(final Context context, final Arguments arguments) {
-        return new Object[]{arguments.checkString(0).equals("component_cruise_launcher")};
+        return new Object[]{arguments.checkString(0).equals(COMPONENT_NAME)};
     }
 
     @Callback(doc = "function():number -- Get the X & Z coordinate of the target position")
@@ -59,5 +63,15 @@ public class CruiseLauncherEnvironment extends FrequencyEnvironment<TileCruiseLa
     @Callback(doc = "function():number -- Set the Frequency the device operates on")
     public Object[] setFrequency(final Context context, final Arguments args) {
         return super.setFrequency(context, args);
+    }
+
+    @Override
+    public String preferredName() {
+        return COMPONENT_NAME;
+    }
+
+    @Override
+    public int priority() {
+        return 1;
     }
 }

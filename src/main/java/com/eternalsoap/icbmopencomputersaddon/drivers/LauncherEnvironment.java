@@ -1,9 +1,11 @@
 package com.eternalsoap.icbmopencomputersaddon.drivers;
 
 import com.eternalsoap.icbmopencomputersaddon.util.ManagedTileEntityEnvironment;
+import com.eternalsoap.icbmopencomputersaddon.util.MissileData;
 import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
 import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.api.EnumTier;
+import li.cil.oc.api.driver.NamedBlock;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -14,15 +16,18 @@ import java.util.Map;
 /**
  * The launcher environment for {@link TileLauncherBase}
  */
-public class LauncherEnvironment extends ManagedTileEntityEnvironment<TileLauncherBase> {
+@SuppressWarnings("unused")
+public class LauncherEnvironment extends ManagedTileEntityEnvironment<TileLauncherBase> implements NamedBlock {
+
+    public static final String COMPONENT_NAME = "icbm_missile_launcher";
 
     public LauncherEnvironment(TileLauncherBase launcherBase) {
-        super(launcherBase, "component_missile_launcher");
+        super(launcherBase, COMPONENT_NAME);
     }
 
-    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s == \"component_missile_launcher\"")
+    @Callback(doc = "function(s:string):boolean -- Method for finding this component when looping through the component list, returns true iff s == \"" + COMPONENT_NAME + "\"")
     public Object[] isICBM(final Context context, final Arguments arguments) {
-        return new Object[]{arguments.checkString(0).equals("component_missile_launcher")};
+        return new Object[]{arguments.checkString(0).equals(COMPONENT_NAME)};
     }
 
     @Callback(doc = "function():number -- Get the X & Z coordinate of the target position")
@@ -78,6 +83,12 @@ public class LauncherEnvironment extends ManagedTileEntityEnvironment<TileLaunch
     @Callback(doc = "function():boolean -- Checks whether a missile is loaded inside the launcher")
     public Object[] containsMissile(final Context context, final Arguments args) {
         return new Object[]{!tileEntity.getMissileStack().isEmpty()};
+    }
+
+    @Callback(doc = "function():string -- Gets the type of missile loaded inside the launcher")
+    public Object[] getMissile(final Context context, final Arguments args) {
+        if(tileEntity.getMissileStack().isEmpty()) return new Object[]{null};
+        return new Object[]{MissileData.damageToString(tileEntity.getMissileStack().getItemDamage())};
     }
 
     @Callback(doc = "function():number -- Get the maximum of the missile launcher")
@@ -146,6 +157,15 @@ public class LauncherEnvironment extends ManagedTileEntityEnvironment<TileLaunch
             default:
                 return null;
         }
+    }
 
+    @Override
+    public String preferredName() {
+        return COMPONENT_NAME;
+    }
+
+    @Override
+    public int priority() {
+        return 1;
     }
 }
